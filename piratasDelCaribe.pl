@@ -63,7 +63,10 @@ galera(galera3,portugal).
 
 capitan(Nombre,Barco,CantidadPiratas).
 
-
+capitan(jackSparrow,perlaNegra,80).
+capitan(davidJones,holandesErrante,200).
+capitan(barbosa,cobra,50).
+capitan(henryTurner,monarca,200).
 
 barco(Nombre,ImpetuCombativo).
 
@@ -142,6 +145,3 @@ existeRutaTransitable(Capitan,PuertoOrigen,PuertoDestino):-
 existeRutaTransitable(Capitan,PuertoOrigen,PuertoDestino):-
     rutaMaritima(Intermedio,PuertoDestino,_),
     existeRutaTransitable(Capitan,PuertoOrigen,Intermedio).
-
-
-
