@@ -44,15 +44,15 @@ viaje(puertoBelice,puertoGranadinas,1200,galera3).
 
 % galeon(Embarcacion,CantidadDeCaniones).
 
-galeon(galeon1,10).
-galeon(galeon2,60).
-galeon(galeon3,30).
+galeon(galeon1,100).
+galeon(galeon2,600).
+galeon(galeon3,300).
 
 % carabela(Embarcacion,CapacidadBodega,CantidadSoldados).
 
-carabela(carabela1,20,45).
-carabela(carabela2,60,15).
-carabela(carabela3,10,25).
+carabela(carabela1,200,450).
+carabela(carabela2,600,150).
+carabela(carabela3,100,250).
 
 % galera(Embarcacion,PaisDeBandera).
 
@@ -69,10 +69,10 @@ capitan(henryTurner,monarca,200).
 
 % barco(Nombre,ImpetuCombativo).
 
-barco(perlaNegra,400).
-barco(holandesErrante,250).
-barco(cobra,100).
-barco(monarca,300).
+barco(perlaNegra,4).
+barco(holandesErrante,2.2).
+barco(cobra,1).
+barco(monarca,3).
 
 % esEspaniol(Barco).
 
