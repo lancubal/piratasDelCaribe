@@ -1,4 +1,4 @@
-puerto(Nombre,Pais).
+% puerto(Nombre,Pais).
 
 puerto(puertoBahamas,bahamas).
 puerto(puertoPanama,panama).
@@ -10,7 +10,7 @@ puerto(puertoSanVicente,sanVicente).
 puerto(puertoSurinam,surinam).
 puerto(puertoGranadinas,granadinas).
 
-rutaMaritima(UnPuerto,OtroPuerto,Distancia).
+% rutaMaritima(UnPuerto,OtroPuerto,Distancia).
 
 rutaMaritima(puertoBahamas,puertoPanama,50).
 rutaMaritima(puertoPanama,puertoJamaica,30).
@@ -21,8 +21,7 @@ rutaMaritima(cartagenaDeIndias,puertoSurinam,25).
 rutaMaritima(cartagenaDeIndias,puertoGranadinas,90).
 rutaMaritima(puertoBelice,puertoGranadinas,10).
 
-viaje(PuertoOrigen,PuertoDestino,ValorMercaderia,Embarcacion):-
-    rutaMaritima(PuertoOrigen,PuertoDestino,_).
+% viaje(PuertoOrigen,PuertoDestino,ValorMercaderia,Embarcacion).
 
 viaje(puertoPanama,puertoJamaica,1000,galeon1).
 viaje(puertoSanVicente,cartagenaDeIndias,200,galeon1).
@@ -43,34 +42,39 @@ viaje(puertoJamaica,puertoIslasCayman,900,galera2).
 viaje(puertoBelice,puertoGranadinas,300,galera3).
 viaje(puertoBelice,puertoGranadinas,1200,galera3).
 
-galeon(Embarcacion,CantidadDeCaniones).
+% galeon(Embarcacion,CantidadDeCaniones).
 
 galeon(galeon1,10).
 galeon(galeon2,60).
 galeon(galeon3,30).
 
-carabela(Embarcacion,CapacidadBodega,CantidadSoldados).
+% carabela(Embarcacion,CapacidadBodega,CantidadSoldados).
 
 carabela(carabela1,20,45).
 carabela(carabela2,60,15).
 carabela(carabela3,10,25).
 
-galera(Embarcacion,PaisDeBandera).
+% galera(Embarcacion,PaisDeBandera).
 
 galera(galera1,espania).
 galera(galera2,inglaterra).
 galera(galera3,portugal).
 
-capitan(Nombre,Barco,CantidadPiratas).
+% capitan(Nombre,Barco,CantidadPiratas).
 
 capitan(jackSparrow,perlaNegra,80).
 capitan(davidJones,holandesErrante,200).
 capitan(barbosa,cobra,50).
 capitan(henryTurner,monarca,200).
 
-barco(Nombre,ImpetuCombativo).
+% barco(Nombre,ImpetuCombativo).
 
-esEspaniol(Barco).
+barco(perlaNegra,400).
+barco(holandesErrante,250).
+barco(cobra,100).
+barco(monarca,300).
+
+% esEspaniol(Barco).
 
 esEspaniol(galera1).
 
@@ -80,25 +84,32 @@ poderio(Capitan,Poderio):-
  Poderio is (CantidadPiratas+2)*ImpetuCombativo.
 
 resistencia(viaje(PuertoOrigen,PuertoDestino,ValorMercaderia,Embarcacion),Resistencia):-
+viaje(PuertoOrigen,PuertoDestino,ValorMercaderia,Embarcacion),
  galeon(Embarcacion,CantidadDeCaniones),
  rutaMaritima(PuertoOrigen,PuertoDestino,Distancia),
  Resistencia is (CantidadDeCaniones*100)/Distancia.
 
 resistencia(viaje(PuertoOrigen,PuertoDestino,ValorMercaderia,Embarcacion),Resistencia):-
+viaje(PuertoOrigen,PuertoDestino,ValorMercaderia,Embarcacion),
  carabela(Embarcacion,_,CantidadSoldados),
  Resistencia is (ValorMercaderia/10)+CantidadSoldados. 
 
 resistencia(viaje(PuertoOrigen,PuertoDestino,ValorMercaderia,Embarcacion),Resistencia):-
+viaje(PuertoOrigen,PuertoDestino,ValorMercaderia,Embarcacion),
  esEspaniol(Embarcacion),
  rutaMaritima(PuertoOrigen,PuertoDestino,Distancia),
  Resistencia is 100 / Distancia.
 
 resistencia(viaje(PuertoOrigen,PuertoDestino,ValorMercaderia,Embarcacion),Resistencia):-
+viaje(PuertoOrigen,PuertoDestino,ValorMercaderia,Embarcacion),
  not(esEspaniol(Embarcacion)),
  Resistencia is ValorMercaderia*10.
 
 puedeAbordar(Capitan,viaje(PuertoOrigen,PuertoDestino,ValorMercaderia,Embarcacion)):-
- poderio(Capitan) > resistencia(viaje(PuertoOrigen,PuertoDestino,ValorMercaderia,Embarcacion)).
+ viaje(PuertoOrigen,PuertoDestino,ValorMercaderia,Embarcacion),
+ poderio(Capitan,Poderio),
+ resistencia(viaje(PuertoOrigen,PuertoDestino,ValorMercaderia,Embarcacion),Resistencia),
+ Poderio > Resistencia.
 
 llegaCon(Embarcacion,Puerto,ValorMercaderia):-
  viaje(_,Puerto,ValorMercaderia,Embarcacion).
@@ -106,6 +117,8 @@ parteCon(Embarcacion,Puerto,ValorMercaderia):-
  viaje(Puerto,_,ValorMercaderia,Embarcacion).
 
 botin(Capitan,Puerto,Botin):-
+ capitan(Capitan,_,_),
+ puerto(Puerto,_),
  findall(ValorMercaderia,(llegaCon(Embarcacion,Puerto,ValorMercaderia),(puedeAbordar(Capitan,viaje(_,Puerto,ValorMercaderia,Embarcacion)))),BotinesEntrantes),
  findall(ValorMercaderia,(parteCon(Embarcacion,Puerto,ValorMercaderia),(puedeAbordar(Capitan,viaje(Puerto,_,ValorMercaderia,Embarcacion)))),BotinesSalientes),
  append(BotinesEntrantes,BotinesSalientes,Botines),
@@ -118,6 +131,7 @@ decadente(Capitan):-
 
 puedeAbordarATodos(Capitan,Puerto):-
  capitan(Capitan,Barco,CantidadDePiratas),
+ puerto(Puerto,_),
  forall(llegaCon(Embarcacion,Puerto,_),puedeAbordar(Capitan,viaje(_,Puerto,_,Embarcacion))),
  forall(parteCon(Embarcacion,Puerto,_),puedeAbordar(Capitan,viaje(Puerto,_,_,Embarcacion))).
 
